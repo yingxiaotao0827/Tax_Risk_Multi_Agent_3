@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>税务风险智能诊断分析系统：流程图</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Heiti SC", Arial, sans-serif;
+      color: #1f2937;
+      margin: 28px;
+      line-height: 1.45;
+      background: #ffffff;
+    }
+    h1 {
+      font-size: 24px;
+      margin: 0 0 18px;
+    }
+    h2 {
+      font-size: 17px;
+      margin: 26px 0 12px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #d1d5db;
+    }
+    .flow {
+      display: table;
+      width: 100%;
+      border-spacing: 8px;
+      page-break-inside: avoid;
+    }
+    .row {
+      display: table-row;
+    }
+    .box,
+    .decision,
+    .arrow,
+    .note {
+      display: table-cell;
+      vertical-align: middle;
+      text-align: center;
+    }
+    .box,
+    .decision,
+    .note {
+      border: 1px solid #94a3b8;
+      border-radius: 6px;
+      padding: 9px 10px;
+      font-size: 12px;
+      background: #f8fafc;
+    }
+    .decision {
+      background: #fff7ed;
+      border-color: #fb923c;
+      font-weight: 600;
+    }
+    .note {
+      background: #eef2ff;
+      border-color: #818cf8;
+    }
+    .arrow {
+      width: 26px;
+      color: #475569;
+      font-weight: 700;
+      font-size: 15px;
+    }
+    .down {
+      text-align: center;
+      color: #475569;
+      font-weight: 700;
+      margin: 2px 0;
+    }
+    .columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      page-break-inside: avoid;
+    }
+    .lane {
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 10px;
+      background: #ffffff;
+    }
+    .lane-title {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #0f172a;
+    }
+    .stack .box,
+    .stack .decision,
+    .stack .note {
+      display: block;
+      margin-bottom: 7px;
+    }
+    .timeline {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .timeline th,
+    .timeline td {
+      border: 1px solid #cbd5e1;
+      padding: 7px;
+      text-align: left;
+    }
+    .timeline th {
+      background: #f1f5f9;
+    }
+  </style>
+</head>
+<body>
+  <h1>税务风险智能诊断分析系统：流程图</h1>
+
+  <h2>1. 总体架构流程图</h2>
+  <div class="flow">
+    <div class="row">
+      <div class="box">企业财报数据</div><div class="arrow">→</div>
+      <div class="box">数据接入层</div><div class="arrow">→</div>
+      <div class="box">只读 SQL 工具</div><div class="arrow">→</div>
+      <div class="box">稽查主 Agent</div>
+    </div>
+    <div class="row">
+      <div class="box">发票流向数据</div><div class="arrow">→</div>
+      <div class="box">数据校验</div><div class="arrow">→</div>
+      <div class="box">财务指标工具</div><div class="arrow">→</div>
+      <div class="box">结构化风险发现</div>
+    </div>
+    <div class="row">
+      <div class="box">税务法规文档</div><div class="arrow">→</div>
+      <div class="box">Milvus 法规索引</div><div class="arrow">→</div>
+      <div class="box">法规检索工具</div><div class="arrow">→</div>
+      <div class="box">监督审核 Agent</div>
+    </div>
+  </div>
+  <div class="down">↓</div>
+  <div class="flow">
+    <div class="row">
+      <div class="decision">审核是否通过</div><div class="arrow">→</div>
+      <div class="box">税务健康体检报告</div><div class="arrow">→</div>
+      <div class="box">API JSON / Markdown / 图表数据</div>
+    </div>
+    <div class="row">
+      <div class="decision">不通过或异常</div><div class="arrow">→</div>
+      <div class="note">人工复核队列</div><div class="arrow">→</div>
+      <div class="box">人工确认后出具报告</div>
+    </div>
+  </div>
+
+  <h2>2. 诊断执行流程图</h2>
+  <div class="columns">
+    <div class="lane stack">
+      <div class="lane-title">输入与工具初始化</div>
+      <div class="box">收到诊断请求：company_id / year</div>
+      <div class="box">初始化 DiagnosticOrchestrator</div>
+      <div class="box">加载 SQL、指标、法规检索工具</div>
+      <div class="box">稽查主 Agent 开始诊断</div>
+    </div>
+    <div class="lane stack">
+      <div class="lane-title">指标计算与风险触发</div>
+      <div class="box">计算增值税税负率</div>
+      <div class="box">计算进项税额增长率</div>
+      <div class="box">计算收入发票差异率</div>
+      <div class="decision">是否触发风险阈值</div>
+    </div>
+  </div>
+  <div class="down">↓</div>
+  <div class="columns">
+    <div class="lane stack">
+      <div class="lane-title">触发风险</div>
+      <div class="box">检索相关税务法规</div>
+      <div class="box">生成 RiskFinding</div>
+      <div class="box">汇总证据链</div>
+    </div>
+    <div class="lane stack">
+      <div class="lane-title">质量审核</div>
+      <div class="box">监督审核 Agent</div>
+      <div class="decision">证据 / 法规 / 置信度是否达标</div>
+      <div class="box">生成最终报告或进入人工复核</div>
+    </div>
+  </div>
+
+  <h2>3. 双 Agent 协同流程图</h2>
+  <div class="flow">
+    <div class="row">
+      <div class="box">用户/API</div><div class="arrow">→</div>
+      <div class="box">诊断编排器</div><div class="arrow">→</div>
+      <div class="box">稽查主 Agent</div><div class="arrow">→</div>
+      <div class="box">工具链取证</div>
+    </div>
+    <div class="row">
+      <div class="box">工具链取证</div><div class="arrow">→</div>
+      <div class="box">SQL 查询</div><div class="arrow">→</div>
+      <div class="box">指标计算</div><div class="arrow">→</div>
+      <div class="box">法规检索</div>
+    </div>
+    <div class="row">
+      <div class="box">结构化风险发现</div><div class="arrow">→</div>
+      <div class="box">监督审核 Agent</div><div class="arrow">→</div>
+      <div class="decision">审核门禁</div><div class="arrow">→</div>
+      <div class="box">报告服务</div>
+    </div>
+  </div>
+
+  <h2>4. Human-in-the-Loop 降级流程图</h2>
+  <div class="flow">
+    <div class="row">
+      <div class="box">监督审核开始</div><div class="arrow">→</div>
+      <div class="decision">证据链完整？</div><div class="arrow">→</div>
+      <div class="decision">法规引用完整？</div><div class="arrow">→</div>
+      <div class="decision">置信度达标？</div>
+    </div>
+    <div class="row">
+      <div class="decision">无工具超预算 / 数据缺失 / 逻辑冲突？</div><div class="arrow">→</div>
+      <div class="box">审核通过</div><div class="arrow">→</div>
+      <div class="box">生成报告</div><div class="arrow">→</div>
+      <div class="box">输出结果</div>
+    </div>
+    <div class="row">
+      <div class="decision">任一检查不通过</div><div class="arrow">→</div>
+      <div class="note">写入 review_queue.json</div><div class="arrow">→</div>
+      <div class="box">人工补证或修正</div><div class="arrow">→</div>
+      <div class="box">确认后出具报告</div>
+    </div>
+  </div>
+
+  <h2>5. 2025.04 - 2025.08 项目排期</h2>
+  <table class="timeline">
+    <thead>
+      <tr><th>阶段</th><th>时间</th><th>核心工作</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>需求与验证</td><td>2025.04</td><td>任务拆解、Qwen2.5/LangChain/Milvus 可行性验证、风险阈值定义</td></tr>
+      <tr><td>数据与工具链</td><td>2025.05</td><td>财报/发票/法规数据模型、只读 SQL、指标工具、Milvus 法规索引</td></tr>
+      <tr><td>Agent 闭环</td><td>2025.06</td><td>稽查主 Agent、监督审核 Agent、Human-in-the-Loop 降级机制</td></tr>
+      <tr><td>报告与服务</td><td>2025.07</td><td>报告生成、FastAPI 服务化、日志审计、异常处理</td></tr>
+      <tr><td>试运行优化</td><td>2025.08</td><td>六类任务评测、准确率优化、格式规范率优化、部署交付</td></tr>
+    </tbody>
+  </table>
+</body>
+</html>
