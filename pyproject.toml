@@ -1,0 +1,10 @@
+[project]
+name = "tax-risk-ai"
+version = "0.1.0"
+description = "Multi-Agent tax risk diagnostic system with LangChain and Milvus"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+

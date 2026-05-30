@@ -1,0 +1,23 @@
+name: tax-risk-ai
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - pandas>=2.2
+  - pydantic>=2.7
+  - pydantic-settings>=2.2
+  - fastapi>=0.111
+  - uvicorn>=0.30
+  - sqlalchemy>=2.0
+  - pytest>=8.2
+  - pip:
+      - langchain>=0.3,<0.4
+      - langchain-community>=0.3,<0.4
+      - langchain-core>=0.3,<0.4
+      - langchain-openai>=0.2,<0.3
+      - langchain-milvus>=0.1.6
+      - pymilvus>=2.5,<2.6
+      - sentence-transformers>=3.0
+      - structlog>=24.1
+      - rich>=13.7
